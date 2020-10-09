@@ -1,4 +1,4 @@
-#settings file
+#settings.py file
 import django_heroku
 
 """
