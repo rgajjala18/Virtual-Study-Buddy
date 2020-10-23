@@ -53,7 +53,8 @@ class StudentCourse(models.Model):
 
 class Course(models.Model):
     prefix = models.CharField(max_length=4)
-    number = models.IntegerField()
+    number = models.CharField(max_length=6)
+    title = models.CharField(max_length=100, default="")
     students = models.ManyToManyField('study_buddy.Student',
                                       related_name='students')
 
