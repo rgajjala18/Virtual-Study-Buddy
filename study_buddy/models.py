@@ -18,7 +18,7 @@ class Student(models.Model):
     graduationYear = models.IntegerField(
         null=True, verbose_name="Graduation Year")
     bio = models.CharField(max_length=4000, verbose_name="Bio")
-
+    #courseList = ...
     #profileIsComplete = models.BooleanField()
 
     def __str__(self):
