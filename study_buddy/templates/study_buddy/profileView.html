@@ -1,0 +1,23 @@
+{% load socialaccount %} {% load static %}
+<html>
+  <head>
+    <title>Profile</title>
+  </head>
+  <body>
+    <h1>{{ student.firstName }}'s Profile</h1>
+    <hr/>
+    {% if user.is_authenticated %}
+    <h2>Student Information</h2>
+    <p>First Name: {{ student.firstName }}</p>
+    <p>Last Name: {{ student.lastName }}</p>
+    <p>Computing ID: {{ student.computingID }}</p>
+    <p>Graduation Year: {{ student.graduationYear }}</p>
+    <h2>Contact Information</h2>
+    <p>Email Address: {{ student.email }}</p>
+    <p>Phone Number: {{ student.phone }}</p>
+    <p>Zoom ID: {{ student.zoomID }}</p>
+    <h2>Bio</h2>
+    <p>{{ student.bio }}</p>
+    {% endif %}
+  </body>
+</html>
