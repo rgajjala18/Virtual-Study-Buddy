@@ -12,6 +12,10 @@ from .forms import UserForm, ProfileForm
 # Create your views here.
 
 
+def home_page(request):
+    template_name = 'study_buddy/index.html'
+    return render(request, template_name)
+
 class StudentCreateView(CreateView):
     model = Student
     fields = ['firstName', 'lastName', 'computingID',

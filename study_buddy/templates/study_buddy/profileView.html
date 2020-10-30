@@ -1,4 +1,8 @@
+{% extends 'study_buddy/base.html' %}
+{% block content %}
+
 {% load socialaccount %} {% load static %}
+<!--
 <html>
   <head>
     <title>Profile</title>
@@ -20,4 +24,52 @@
     <p>{{ student.bio }}</p>
     {% endif %}
   </body>
+
+  <a href="{% url 'study_buddy:update_profile' %}" class="btn btn-primary">Edit Info</a>
+
+  <div class="card-header">
+        Contact Information
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Email Address: {{ student.email }}</li>
+        <li class="list-group-item">Phone Number: {{ student.phone }}</li>
+        <li class="list-group-item">Computing ID: {{ student.computingID }}</li>
+      </ul>
+
 </html>
+-->
+
+<html>
+  <head>
+    <title>Profile</title>
+  </head>
+  <body>
+    <h1>{{ student.firstName }}'s Profile</h1>
+    <hr/>
+    {% if user.is_authenticated %}
+    <div class="card" style="width: 30rem;">
+      <div class="card-header">
+        Student Information
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">First Name: {{ student.firstName }}</li>
+        <li class="list-group-item">Last Name: {{ student.lastName }}</li>
+        <li class="list-group-item">Zoom ID: {{ student.zoomID }}</li>
+        <li class="list-group-item">Graduation Year: {{ student.graduationYear }}</li>
+      </ul>
+      <div class="card-header">
+        Contact Information
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Email Address: {{ student.email }}</li>
+        <li class="list-group-item">Phone Number: {{ student.phone }}</li>
+        <li class="list-group-item">Computing ID: {{ student.computingID }}</li>
+      </ul>
+    </div>
+
+    {% endif %}
+  </body>
+  <a style="margin-top:15px;" href="{% url 'study_buddy:update_profile' %}" class="btn btn-primary">Edit Info</a>
+</html>
+
+{% endblock %}

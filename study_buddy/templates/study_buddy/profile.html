@@ -1,6 +1,17 @@
-<form method="post">
-  {% csrf_token %}
-  {{ user_form.as_p }}
-  {{ profile_form.as_p }}
-  <button type="submit">Save changes</button>
-</form>
+{% extends 'study_buddy/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="card-body">
+  <h3>Update Profile</h3>
+  <form method="post" style="margin-top: 1.3em;">
+  <table>
+    {{ profile_form | crispy }}
+    {% csrf_token %}
+    <button type="submit" style="margin-top:15px;" class="btn btn-primary  btn-lg">Submit</button>
+  </table>
+  </form>
+</div>
+{% endblock %}
+
