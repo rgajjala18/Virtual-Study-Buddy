@@ -1,6 +1,7 @@
 from django.test import TestCase
-
+from .models import Student
 from django.contrib.auth import get_user_model
+
 
 
 class UsersManagersTests(TestCase):
@@ -22,3 +23,13 @@ class UsersManagersTests(TestCase):
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
+
+class ModelsTests(TestCase):
+
+    def create_student(self, first="John", last="Smith"):
+        return Student.objects.create(firstName=first, lastName=last)
+
+    def test_student_name(self):
+        s = self.create_student()
+        self.assertTrue(isinstance(s, Student))
+        self.assertEqual(s.__str__(), "John Smith")
