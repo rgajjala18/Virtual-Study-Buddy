@@ -40,7 +40,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class StudentCourse(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        Student, related_name="has_courses", on_delete=models.CASCADE)
     prefix = models.CharField(max_length=4)
     number = models.IntegerField()
     preferredSize = models.CharField(max_length=30)
@@ -48,7 +49,7 @@ class StudentCourse(models.Model):
     preferredTimeOfDay = models.CharField(max_length=30)
 
     def __str__(self):
-        return (self.prefix + " " + self.number)
+        return (self.prefix + " " + str(self.number))
 
 
 class Course(models.Model):
