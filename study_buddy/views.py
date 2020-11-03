@@ -58,8 +58,7 @@ def update_profile(request):
 
 class StudentCourseCreate(CreateView):
     model = StudentCourse
-    fields = ['prefix', 'number', 'preferredSize',
-              'preferredFrequency', 'preferredTimeOfDay']
+    fields = []
     success_url = reverse_lazy('study_buddy:profile')
 
     def get_context_data(self, **kwargs):
@@ -74,29 +73,28 @@ class StudentCourseCreate(CreateView):
         context = self.get_context_data()
         studentcourses = context['studentcourses']
         with transaction.atomic():
-            form.instance.student = self.request.user.student
+            form.instance = self.request.user
             self.object = form.save()
 
             if studentcourses.is_valid():
-                studentcourses.instance = self.object
+                studentcourses.instance = self.object.student
                 studentcourses.save()
         return super(StudentCourseCreate, self).form_valid(form)
 
 
 class StudentCourseUpdate(UpdateView):
     model = StudentCourse
-    fields = ['prefix', 'number', 'preferredSize',
-              'preferredFrequency', 'preferredTimeOfDay']
+    fields = []
     success_url = reverse_lazy('study_buddy:profile')
 
     def get_context_data(self, **kwargs):
         data = super(StudentCourseUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
             data['studentcourses'] = StudentCourseFormSet(
-                self.request.POST, instance=self.object)
+                self.request.POST, instance=self.object.student)
         else:
             data['studentcourses'] = StudentCourseFormSet(
-                instance=self.object)
+                instance=self.object.student)
         return data
 
     def form_valid(self, form):

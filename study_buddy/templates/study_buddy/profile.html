@@ -67,7 +67,7 @@
       <hr/>
       <div class="card-body">
         <table class="table">
-          {% if student.has_courses %}
+          {% if student.has_courses.all %}
           {% for course in student.has_courses.all %}
           <tr>
             <th>{{ course.prefix }}</th>
@@ -76,7 +76,13 @@
           {% endfor %}
           {% endif %}
         </table>
-        <a style="margin-top:15px;" href="{% url 'study_buddy:add_course' %}" class="btn btn-primary">Edit Courses</a>
+        {% if student.has_courses.all %}
+        <a style="margin-top:15px;" href="{% url 'study_buddy:update_course' student.pk %}" class="btn btn-primary">Edit Courses</a>
+        {% else %}
+        <a style="margin-top:15px;" href="{% url 'study_buddy:add_course' %}" class="btn btn-primary">Add Courses</a>
+        {% endif %}
+        
+        
       </div>
       {% endif %}
   </body>
