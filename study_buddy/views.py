@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.views.generic.edit import CreateView
-from .models import Student
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.detail import DetailView
+from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib import messages
-from .forms import UserForm, ProfileForm
+from .forms import *
 # Create your views here.
 
 
@@ -16,15 +18,16 @@ def home_page(request):
     template_name = 'study_buddy/index.html'
     return render(request, template_name)
 
+
 class StudentCreateView(CreateView):
     model = Student
     fields = ['firstName', 'lastName', 'computingID',
               'email', 'phone', 'zoomID', 'graduationYear', 'bio']
-    template_name = 'study_buddy/updateProfile.html'
+    template_name = 'study_buddy/update_profile.html'
 
 
 def profile_view(request):
-    template_name = 'study_buddy/profileView.html'
+    template_name = 'study_buddy/profile.html'
     student = request.user.student
     return render(request, template_name, {
         'student': student,
@@ -51,4 +54,51 @@ def update_profile(request):
         'profile_form': profile_form
     }
 
-    return render(request, 'study_buddy/profile.html', context)
+    return render(request, 'study_buddy/update_profile.html', context)
+
+
+class StudentCourseUpdate(UpdateView):
+    model = Student
+    fields = []
+    success_url = reverse_lazy('study_buddy:profile')
+    template_name = 'study_buddy/studentcourse_form.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(StudentCourseUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['studentcourses'] = StudentCourseFormSet(
+                self.request.POST, instance=self.object)
+        else:
+            data['studentcourses'] = StudentCourseFormSet(
+                instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        studentcourses = context['studentcourses']
+        with transaction.atomic():
+            form.instance.student = self.request.user.student
+            self.object = form.save()
+
+            if studentcourses.is_valid():
+                studentcourses.instance = self.object
+                studentcourses.save()
+        return super(StudentCourseUpdate, self).form_valid(form)
+
+    def get_object(self):
+        return self.model.objects.get(pk=self.request.user.student.pk)
+
+
+def course_view(request, **kwargs):
+    template_name = 'study_buddy/course_view.html'
+    course = StudentCourse.objects.filter(
+        prefix=kwargs['course_prefix'], number=kwargs['course_number'])
+    study_groups = StudyGroup.objects.filter(
+        prefix=kwargs['course_prefix'], number=kwargs['course_number'])
+
+    print(course)
+    return render(request, template_name, {
+        'course': course,
+        'student': request.user,
+        'study_groups': study_groups,
+    })
