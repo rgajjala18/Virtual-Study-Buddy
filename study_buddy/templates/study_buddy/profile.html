@@ -70,17 +70,21 @@
           {% if student.has_courses.all %}
           {% for course in student.has_courses.all %}
           <tr>
-            <th>{{ course.prefix }}</th>
-            <td>{{ course.number }}</td>
+            <a href="{% url 'study_buddy:course_page' course.prefix course.number %}" class="btn btn-primary">
+              <th>{{ course.prefix }}</th>
+              <td>{{ course.number }}</td>
+            </a>
           </tr>
           {% endfor %}
           {% endif %}
         </table>
-        {% if student.has_courses.all %}
-        <a style="margin-top:15px;" href="{% url 'study_buddy:update_course' student.pk %}" class="btn btn-primary">Edit Courses</a>
-        {% else %}
-        <a style="margin-top:15px;" href="{% url 'study_buddy:add_course' %}" class="btn btn-primary">Add Courses</a>
-        {% endif %}
+        <a style="margin-top:15px;" href="{% url 'study_buddy:update_courses' %}" class="btn btn-primary">
+          {% if student.has_courses.all %}
+          Edit Courses
+          {% else %}
+          Add Courses
+          {% endif %}
+        </a>
         
         
       </div>

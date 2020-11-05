@@ -3,7 +3,6 @@ from .models import Student, StudentCourse
 from django.contrib.auth.models import User
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
-from .custom_layout_object import *
 from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder, Submit
 
 
