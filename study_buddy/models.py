@@ -69,6 +69,9 @@ class StudentCourse(models.Model):
     preferredTimeOfDay = MultiSelectField(
         choices=PREFERRED_TIME_OF_DAY_CHOICES)
 
+    class Meta:
+        unique_together = ["student", "prefix", "number"]
+
     def __str__(self):
         return (self.prefix + " " + str(self.number))
 

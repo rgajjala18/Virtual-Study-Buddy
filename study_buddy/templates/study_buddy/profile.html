@@ -10,6 +10,7 @@
     <div class="card">
       <div class="card-header">
         <h1><b>{{ student.firstName }}'s Profile</b></h1>
+        <p>(<a href="{% url 'study_buddy:update_profile' %}">Edit</a>)</p>
       </div>
       <hr/>
       {% if user.is_authenticated %}
@@ -59,25 +60,34 @@
           </tr>
           {% endif %}
         </table>
+        {% if student.bio %}
+          <div class="card-body">
+            <h5>Bio</h5>
+            <p>{{ student.bio }}</p>
+          </div>
+        {% endif %}
+        <br />
         <a style="margin-top:15px;" href="{% url 'study_buddy:update_profile' %}" class="btn btn-primary">Edit Info</a>
       </div>
       <div class="card-header">
         <h1><b>Courses</b></h1>
+        <p>(<a href="{% url 'study_buddy:update_courses' %}">Edit</a>)</p>
       </div>
       <hr/>
       <div class="card-body">
-        <table class="table">
           {% if student.has_courses.all %}
           {% for course in student.has_courses.all %}
-          <tr>
-            <a href="{% url 'study_buddy:course_page' course.prefix course.number %}" class="btn btn-primary">
-              <th>{{ course.prefix }}</th>
-              <td>{{ course.number }}</td>
-            </a>
-          </tr>
+            
+              <a href="{% url 'study_buddy:course_page' course.prefix course.number %}" class="btn"><h3>{{ course.prefix }} {{ course.number }}</h3></a>
+              <br/>
+              <ul>
+                <li>Preferred Size: {{ course.preferredSize }}</li>
+                <li>Preferred Frequency: {{ course.preferredFrequency }}</li>
+                <li>Preferred Time Of Day: {{ course.preferredTimeOfDay }}</li>
+              </ul>
+              <hr/>
           {% endfor %}
           {% endif %}
-        </table>
         <a style="margin-top:15px;" href="{% url 'study_buddy:update_courses' %}" class="btn btn-primary">
           {% if student.has_courses.all %}
           Edit Courses

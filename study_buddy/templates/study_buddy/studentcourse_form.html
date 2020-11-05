@@ -4,7 +4,9 @@
 {% block title %}{% endblock %}
 {% block content %}
 <div class="card">
-    <h2>Courses</h2>
+    <div class="card-header">
+        <h1><b>Update Courses</b></h1>
+    </div>
     <hr>
     <div class="col-md-4">
         <form action="" method="post">{% csrf_token %}
@@ -46,7 +48,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
     <script type="text/javascript">
         $('.formset_row').formset({
-            addText: 'add course',
+            addText: '',
             deleteText: 'remove',
             prefix: '{{ formset.prefix }}',
         });
