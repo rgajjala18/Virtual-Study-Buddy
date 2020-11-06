@@ -6,5 +6,9 @@ app_name = 'study_buddy'
 urlpatterns = [
     path('', views.home_page, name='index'),
     path('profile/', views.profile_view, name='profile'),
-    path('update_profile/', views.update_profile, name='update_profile'),
+    path('profile/update_profile/', views.update_profile, name='update_profile'),
+    path('profile/update_courses/',
+         views.StudentCourseUpdate.as_view(), name='update_courses'),
+    path('course/<str:course_prefix>/<int:course_number>/',
+         views.course_view, name='course_page')
 ]

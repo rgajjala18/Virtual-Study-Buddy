@@ -1,0 +1,31 @@
+{% extends 'study_buddy/base.html' %}
+{% block content %}
+{% load socialaccount %} {% load static %}
+
+<html>
+  <head>
+    <title>Course</title>
+  </head>
+  <body>
+    <h1>List of students taking the course:</h1>
+    {% for c in course %}
+    <div class="card">
+        <div class="card-body">
+            <h3>{{ c.student }}</h3>
+            <p>Class of {{ c.student.graduationYear }}</p>
+            <p>{{ c.student.bio }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    <h1>List of study groups:</h1>
+    {% for s in study_groups %}
+    <div class="card">
+        <div class="card-body">
+        </div>
+    </div>
+    {% endfor %}
+  </body>
+  
+</html>
+
+{% endblock %}

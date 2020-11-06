@@ -1,17 +1,106 @@
 {% extends 'study_buddy/base.html' %}
-{% load crispy_forms_tags %}
 {% block content %}
+{% load socialaccount %} {% load static %}
 
+<html>
+  <head>
+    <title>Profile</title>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <h1><b>{{ student.firstName }}'s Profile</b></h1>
+        <p>(<a href="{% url 'study_buddy:update_profile' %}">Edit</a>)</p>
+      </div>
+      <hr/>
+      {% if user.is_authenticated %}
+      <div class="card-body">
+        <table class="table">
+          
+          {% if student.firstName %}
+          <tr>
+            <th>First Name</th>
+            <td>{{ student.firstName }}</td>
+          </tr>
+          {% endif %}
+          {% if student.lastName %}
+          <tr>
+            <th>Last Name</th>
+            <td>{{ student.lastName }}</td>
+          </tr>
+          {% endif %}
+          {% if student.zoomID %}
+          <tr>
+            <th>Zoom ID</th>
+            <td>{{ student.zoomID }}</td>
+          </tr>
+          {% endif %}
+          {% if student.graduationYear %}
+          <tr>
+            <th>Graduation Year</th>
+            <td>{{ student.graduationYear }}</td>
+          </tr>
+          {% endif %}
+          {% if student.email %}
+          <tr>
+            <th>Email Address</th>
+            <td>{{ student.email }}</td>
+          </tr>
+          {% endif %}
+          {% if student.phone %}
+          <tr>
+            <th>Phone Number</th>
+            <td>{{ student.phone }}</td>
+          </tr>
+          {% endif %}
+          {% if student.computingID %}
+          <tr>
+            <th>Computing ID</th>
+            <td>{{ student.computingID }}</td>
+          </tr>
+          {% endif %}
+        </table>
+        {% if student.bio %}
+          <div class="card-body">
+            <h5>Bio</h5>
+            <p>{{ student.bio }}</p>
+          </div>
+        {% endif %}
+        <br />
+        <a style="margin-top:15px;" href="{% url 'study_buddy:update_profile' %}" class="btn btn-primary">Edit Info</a>
+      </div>
+      <div class="card-header">
+        <h1><b>Courses</b></h1>
+        <p>(<a href="{% url 'study_buddy:update_courses' %}">Edit</a>)</p>
+      </div>
+      <hr/>
+      <div class="card-body">
+          {% if student.has_courses.all %}
+          {% for course in student.has_courses.all %}
+            
+              <a href="{% url 'study_buddy:course_page' course.prefix course.number %}" class="btn"><h3>{{ course.prefix }} {{ course.number }}</h3></a>
+              <br/>
+              <ul>
+                <li>Preferred Size: {{ course.preferredSize }}</li>
+                <li>Preferred Frequency: {{ course.preferredFrequency }}</li>
+                <li>Preferred Time Of Day: {{ course.preferredTimeOfDay }}</li>
+              </ul>
+              <hr/>
+          {% endfor %}
+          {% endif %}
+        <a style="margin-top:15px;" href="{% url 'study_buddy:update_courses' %}" class="btn btn-primary">
+          {% if student.has_courses.all %}
+          Edit Courses
+          {% else %}
+          Add Courses
+          {% endif %}
+        </a>
+        
+        
+      </div>
+      {% endif %}
+  </body>
+  
+</html>
 
-<div class="card-body">
-  <h3>Update Profile</h3>
-  <form method="post" style="margin-top: 1.3em;">
-  <table>
-    {{ profile_form | crispy }}
-    {% csrf_token %}
-    <button type="submit" style="margin-top:15px;" class="btn btn-primary  btn-lg">Submit</button>
-  </table>
-  </form>
-</div>
 {% endblock %}
-
