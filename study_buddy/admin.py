@@ -30,6 +30,16 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ['prefix', 'number', 'title']
 
 
+class StudyGroupAdmin(admin.ModelAdmin):
+    fieldsets = [('Group Name', {'fields': ['groupName']}),
+                 ('Course Prefix', {'fields': ['prefix']}),
+                 ('Course Number', {'fields': ['number']}),
+                 ('Students', {'fields': ['students']})]
+    list_display = ('groupName', 'prefix', 'number')
+    search_fields = ['groupName', 'prefix', 'number']
+
+
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentCourse, StudentCourseAdmin)
 admin.site.register(Course, CourseAdmin)
+admin.site.register(StudyGroup, StudyGroupAdmin)

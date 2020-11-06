@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Student, StudentCourse
+from .models import *
 from django.contrib.auth.models import User
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
@@ -23,6 +23,12 @@ class StudentCourseForm(ModelForm):
     class Meta:
         model = StudentCourse
         exclude = ()
+
+
+class StudyGroupForm(ModelForm):
+    class Meta:
+        model = StudyGroup
+        fields = ('groupName', )
 
 
 StudentCourseFormSet = inlineformset_factory(

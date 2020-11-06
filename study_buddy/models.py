@@ -27,6 +27,15 @@ PREFERRED_TIME_OF_DAY_CHOICES = (('early_morning', 'Early mornings (6AM-9AM ET)'
                                  ('night', 'Night (9PM-12AM)'))
 
 
+class StudyGroup(models.Model):
+    students = models.ManyToManyField(
+        'study_buddy.Student', related_name='students_in_group')
+    prefix = models.CharField(max_length=4)
+    number = models.CharField(max_length=6)
+    groupName = models.CharField(
+        max_length=40, null=True, verbose_name="Group Name")
+
+
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     firstName = models.CharField(max_length=20, verbose_name="First Name")
@@ -85,10 +94,3 @@ class Course(models.Model):
 
     def __str__(self):
         return (self.prefix + " " + self.number)
-
-
-class StudyGroup(models.Model):
-    students = models.ManyToManyField(
-        'study_buddy.Student', related_name='students_in_group')
-    prefix = models.CharField(max_length=4)
-    number = models.CharField(max_length=6)

@@ -19,11 +19,22 @@ def home_page(request):
     return render(request, template_name)
 
 
-class StudentCreateView(CreateView):
-    model = Student
-    fields = ['firstName', 'lastName', 'computingID',
-              'email', 'phone', 'zoomID', 'graduationYear', 'bio']
-    template_name = 'study_buddy/update_profile.html'
+@login_required
+def create_study_group(request):
+    if request.method == 'POST':
+        study_group_form = StudyGroupForm(request.POST, instance=request.user)
+        if study_group_form.is_valid():
+            study_group_form.save()
+        messages.success(request, ('Your study group has been created!'))
+        return redirect('/study_buddy/profile')
+    else:
+        study_group_form = StudyGroupForm(instance=request.user)
+
+    context = {
+        'study_group_form': study_group_form,
+    }
+
+    return render(request, 'study_buddy/create_group.html', context)
 
 
 def profile_view(request):
@@ -96,7 +107,6 @@ def course_view(request, **kwargs):
     study_groups = StudyGroup.objects.filter(
         prefix=kwargs['course_prefix'], number=kwargs['course_number'])
 
-    print(course)
     return render(request, template_name, {
         'course': course,
         'student': request.user,

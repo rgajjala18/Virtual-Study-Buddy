@@ -7,8 +7,9 @@
     <title>Course</title>
   </head>
   <body>
-    <h1>List of students taking the course:</h1>
+    <h1>List of other students taking the course:</h1>
     {% for c in course %}
+    {% ifnotequal c.student.id student.id %}
     <div class="card">
         <div class="card-body">
             <h3>{{ c.student }}</h3>
@@ -16,6 +17,7 @@
             <p>{{ c.student.bio }}</p>
         </div>
     </div>
+    {% endifnotequal %}
     {% endfor %}
     <h1>List of study groups:</h1>
     {% for s in study_groups %}
@@ -24,6 +26,7 @@
         </div>
     </div>
     {% endfor %}
+    <a href="{% url 'study_buddy:create_group' %}"><h1>Create New Study Group</h1></a>
   </body>
   
 </html>

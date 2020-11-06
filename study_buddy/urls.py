@@ -10,5 +10,7 @@ urlpatterns = [
     path('profile/update_courses/',
          views.StudentCourseUpdate.as_view(), name='update_courses'),
     path('course/<str:course_prefix>/<int:course_number>/',
-         views.course_view, name='course_page')
+         views.course_view, name='course_page'),
+    path('course/create_group/',
+         views.create_study_group, name='create_group'),
 ]
