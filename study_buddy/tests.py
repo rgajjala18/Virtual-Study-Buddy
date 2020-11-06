@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.by import By
 import time
+from django.urls import reverse
+from . import views
 
 class UsersManagersTests(TestCase):
 
@@ -70,6 +72,16 @@ class FormsTests(TestCase):
         form = ProfileForm(data=data)
         self.assertFalse(form.is_valid())
 
+'''class UrlsTests(TestCase):
+
+    def test_url(self):
+        url1 = reverse(views.profile_view)
+        self.assertEqual(url1, 'profile/')
+
+    def test_url2(self):
+        url = reverse(views.update_profile)
+        self.assertEqual(url, 'update_profile/')
+'''
 '''class ViewsTests(unittest.TestCase):
 
     def setUp(self):
