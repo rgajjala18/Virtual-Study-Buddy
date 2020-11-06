@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Student
 from .models import Course
+from .models import StudentCourse
 from django.contrib.auth import get_user_model
 from study_buddy.forms import UserForm, ProfileForm
 import unittest
@@ -52,6 +53,17 @@ class ModelsTests(TestCase):
         self.assertTrue(isinstance(t, Course))
         self.assertEqual(t.__str__(), "CS 3240")
 
+'''   def create_student_course(self, student=Student.objects.create(), prefix="CS", number="3240", preferredSize="2_people", preferredFrequency="daily", preferredTimeOfDay="early_morning"):
+        return StudentCourse.objects.create(student=student, prefix=prefix, number=number, preferredSize=preferredSize, preferredFrequency=preferredFrequency, preferredTimeOfDay=preferredTimeOfDay)
+
+    def test_student_course(self):
+        sc = self.create_student_course()
+        self.assertTrue(isinstance(sc, StudentCourse))
+        self.assertEqual(sc.__str__(), "CS 3240")
+        self.assertEqual(sc.preferredSize, "2_people")
+        self.assertEqual(sc.preferredFrequency, "daily")
+'''
+
 class FormsTests(TestCase):
 
     def test_valid_form(self):
@@ -71,8 +83,8 @@ class FormsTests(TestCase):
         data = {'name': s.email, }
         form = ProfileForm(data=data)
         self.assertFalse(form.is_valid())
-
-'''class UrlsTests(TestCase):
+'''
+class UrlsTests(TestCase):
 
     def test_url(self):
         url1 = reverse(views.profile_view)
