@@ -1,0 +1,25 @@
+{% extends 'study_buddy/base.html' %}
+{% block content %}
+{% load socialaccount %} {% load static %}
+
+<html>
+  <head>
+    <title>Groups</title>
+  </head>
+  <body>
+    <a href="{% url 'study_buddy:create_group' %}"><h1>Create New Study Group</h1></a>
+    <h1>My Groups</h1>
+    {% for s in study_groups %}
+    <div class="card">
+        <div class="card-body">
+            <h3>{{ s.studentCourse }}</h3>
+            <p>Group: {{ s.groupName }}</p>
+            <p>Owner: {{ s.students.first }}</p>
+        </div>
+    </div>
+    {% endfor %}
+  </body>
+  
+</html>
+
+{% endblock %}

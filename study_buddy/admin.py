@@ -31,12 +31,20 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 class StudyGroupAdmin(admin.ModelAdmin):
+    '''
     fieldsets = [('Group Name', {'fields': ['groupName']}),
                  ('Course Prefix', {'fields': ['prefix']}),
                  ('Course Number', {'fields': ['number']}),
                  ('Students', {'fields': ['students']})]
     list_display = ('groupName', 'prefix', 'number')
     search_fields = ['groupName', 'prefix', 'number']
+    '''
+    fieldsets = [('Group Name', {'fields': ['groupName']}),
+                 ('Course', {'fields': ['studentCourse']}),
+                 ('Students', {'fields': ['students']}), ]
+    list_display = ('groupName', 'studentCourse', 'student_names')
+    search_fields = ['groupName', 'studentCourse', 'students']
+
 
 
 admin.site.register(Student, StudentAdmin)

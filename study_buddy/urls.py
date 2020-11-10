@@ -13,4 +13,5 @@ urlpatterns = [
          views.course_view, name='course_page'),
     path('course/create_group/',
          views.create_study_group, name='create_group'),
+    path('groups/', views.group_view, name='group_page'),
 ]

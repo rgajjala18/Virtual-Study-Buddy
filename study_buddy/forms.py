@@ -26,9 +26,19 @@ class StudentCourseForm(ModelForm):
 
 
 class StudyGroupForm(ModelForm):
+    """
     class Meta:
         model = StudyGroup
         fields = ('groupName', )
+    """
+    class Meta:
+        model = StudyGroup
+        fields = ('studentCourse','courseName','groupName')
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        student = Student.objects.get(user=user)
+        self.fields['studentCourse'].queryset = StudentCourse.objects.filter(student=student)
 
 
 StudentCourseFormSet = inlineformset_factory(

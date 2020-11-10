@@ -27,13 +27,19 @@ PREFERRED_TIME_OF_DAY_CHOICES = (('early_morning', 'Early mornings (6AM-9AM ET)'
                                  ('night', 'Night (9PM-12AM)'))
 
 
+
+
 class StudyGroup(models.Model):
-    students = models.ManyToManyField(
-        'study_buddy.Student', related_name='students_in_group')
-    prefix = models.CharField(max_length=4)
-    number = models.CharField(max_length=6)
-    groupName = models.CharField(
-        max_length=40, null=True, verbose_name="Group Name")
+    students = models.ManyToManyField('Student')
+    studentCourse = models.ForeignKey('StudentCourse', on_delete=models.SET_NULL, null=True, verbose_name = "Course")
+    courseName = models.CharField(max_length=30, verbose_name = "Course Name", default="")
+    groupName = models.CharField(max_length=100, verbose_name = "Group Name", default="")
+
+    def student_names(self):
+        return ', '.join([str(s) for s in self.students.all()])
+    student_names.short_description = "Student Names"
+
+
 
 
 class Student(models.Model):
@@ -47,6 +53,7 @@ class Student(models.Model):
     graduationYear = models.IntegerField(
         null=True, verbose_name="Graduation Year")
     bio = models.CharField(max_length=4000, verbose_name="Bio")
+    #group = models.ForeignKey(StudyGroup, related_name="has_students",on_delete=models.SET_NULL, null=True)
     # courseList = ...
     # profileIsComplete = models.BooleanField()
 
@@ -94,3 +101,9 @@ class Course(models.Model):
 
     def __str__(self):
         return (self.prefix + " " + self.number)
+
+
+
+
+
+

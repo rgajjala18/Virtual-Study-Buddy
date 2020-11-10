@@ -21,6 +21,7 @@ def home_page(request):
 
 @login_required
 def create_study_group(request):
+    """
     if request.method == 'POST':
         study_group_form = StudyGroupForm(request.POST, instance=request.user)
         if study_group_form.is_valid():
@@ -35,6 +36,22 @@ def create_study_group(request):
     }
 
     return render(request, 'study_buddy/create_group.html', context)
+    """
+    if request.method == 'POST':
+        form = StudyGroupForm(request.user, request.POST)
+        if form.is_valid():
+            group = form.save(commit=False)
+            new_student = Student.objects.get(user=request.user)
+            #group.student = new_student
+            #new_student.group = group
+            group.save()
+            group.students.add(new_student)
+            return redirect('/study_buddy/groups')
+    else:
+        form = StudyGroupForm(request.user)
+    return render(request, 'study_buddy/group_form.html', {'form': form})
+    
+
 
 
 def profile_view(request):
@@ -102,13 +119,24 @@ class StudentCourseUpdate(UpdateView):
 
 def course_view(request, **kwargs):
     template_name = 'study_buddy/course_view.html'
-    course = StudentCourse.objects.filter(
+    course_query = StudentCourse.objects.filter(
         prefix=kwargs['course_prefix'], number=kwargs['course_number'])
-    study_groups = StudyGroup.objects.filter(
-        prefix=kwargs['course_prefix'], number=kwargs['course_number'])
+    course = course_query.first()
+    study_groups = StudyGroup.objects.filter(studentCourse__prefix=course.prefix, studentCourse__number=course.number)
 
     return render(request, template_name, {
-        'course': course,
+        'course': course_query,
+        'student': request.user,
+        'study_groups': study_groups,
+    })
+
+def group_view(request, **kwargs):
+    template_name = 'study_buddy/group_view.html'
+    student = Student.objects.get(user=request.user)
+    #study_groups = StudyGroup.objects.filter(student__user=request.user.id)
+    study_groups = student.studygroup_set.all()
+
+    return render(request, template_name, {
         'student': request.user,
         'study_groups': study_groups,
     })
