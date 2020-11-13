@@ -7,7 +7,12 @@
     <title>Course</title>
   </head>
   <body>
-    <h1>List of other students taking {{ course.first.prefix }} {{ course.first.number }}</h1>
+    {% if course.exists %}
+    <h1>List of students taking {{ course.first.prefix }} {{ course.first.number }}</h1>
+    {% endif %}
+    {% if not course.exists %}
+    <h3>There are no other students taking {{ course.first.prefix }} {{ course.first.number }}.</h3>
+    {% endif %}
     {% for c in course %}
     {% ifnotequal c.student.id student.id %}
     <div class="card">
@@ -21,17 +26,35 @@
     {% endfor %}
 
   
+    {% if study_groups.exists %}
     <h1>List of study groups:</h1>
+    {% endif %}
+    {% if not study_groups.exists %}
+    <h3>There are no study groups for this course.</h3>
+    {% endif %}
     {% for s in study_groups %}
+    {% if student_object not in s.students.all %}
     <div class="card">
         <div class="card-body">
             <h3>{{ s.studentCourse }}</h3>
             <p>Group: {{ s.groupName }}</p>
-            <p>Owner: {{ s.students.first }}</p>
+            <p>Owner: {{ s.owner }}</p>
+            <a href="{% url 'study_buddy:join_group' s.id%}"><p>Join this Group</p></a>
         </div>
     </div>
+    {% endif %}
+    {% if student_object in s.students.all %}
+    <div class="card">
+        <div class="card-body">
+            <h3>{{ s.studentCourse }}</h3>
+            <p>Group: {{ s.groupName }}</p>
+            <p>Owner: {{ s.owner }}</p>
+            <p>You are already in this group!</p>
+        </div>
+    </div>
+    {% endif %}
     {% endfor %}
-    <a href="{% url 'study_buddy:create_group' %}"><h1>Create New Study Group</h1></a>
+    <a href="{% url 'study_buddy:create_group' %}" class="btn btn-primary active" style="margin-top:15px; margin-bottom:15px;"><h4>Create New Study Group</h4></a>
       
     </div>
   </body>

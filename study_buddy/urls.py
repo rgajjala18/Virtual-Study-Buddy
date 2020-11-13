@@ -14,4 +14,9 @@ urlpatterns = [
     path('course/create_group/',
          views.create_study_group, name='create_group'),
     path('groups/', views.group_view, name='group_page'),
+    path('groups/<str:id>/', views.group_info, name='group_info'),
+    path('groups/<str:id>/<str:sid>/', views.add_member, name='add_member'),
+    path('join/<str:id>/', views.join_group, name='join_group'),
+    path('leave/<str:id>/', views.leave_group, name='leave_group'),
+    path('remove/<str:id>/<str:sid>/', views.remove_member, name='remove_member'),
 ]

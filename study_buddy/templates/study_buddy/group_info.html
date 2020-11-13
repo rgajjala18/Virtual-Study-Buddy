@@ -1,0 +1,44 @@
+{% extends 'study_buddy/base.html' %}
+{% block content %}
+{% load socialaccount %} {% load static %}
+
+<html>
+  <head>
+    <title>My Group</title>
+  </head>
+  <body>
+    <h1>{{ group.groupName }}</h1>
+    <h3>Members in Group: </h3>
+    {% for s in students %}
+    <div class="card">
+        <div class="card-body">
+            <p>Student: {{ s }}</p>
+            <p>Zoom ID: {{ s.zoomID }}</p>
+            {% ifequal student.id s.id %}
+            <a href="{% url 'study_buddy:leave_group' group.id%}"><p>Leave this Group</p></a>
+            {% endifequal %}
+            {% ifequal student.id group.owner.id %}
+            {% ifnotequal student.id s.id %}
+            <a href="{% url 'study_buddy:remove_member' group.id s.id%}"><p>Remove this Member</p></a>
+            {% endifnotequal %}
+            {% endifequal %}
+        </div>
+    </div>
+    {% endfor %}
+    <h3>Available Members: </h3>
+    {% for c in students_in_class %}
+    {% if c.student not in students %}
+    <div class="card">
+        <div class="card-body">
+            <p>{{ c.student }}</p>
+            <p>Class of {{ c.student.graduationYear }}</p>
+            <a href="{% url 'study_buddy:add_member' group.id c.student.id%}"><p>Add Member to Group</p></a>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </body>
+  
+</html>
+
+{% endblock %}

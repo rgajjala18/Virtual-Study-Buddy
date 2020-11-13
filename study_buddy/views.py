@@ -21,31 +21,15 @@ def home_page(request):
 
 @login_required
 def create_study_group(request):
-    """
-    if request.method == 'POST':
-        study_group_form = StudyGroupForm(request.POST, instance=request.user)
-        if study_group_form.is_valid():
-            study_group_form.save()
-        messages.success(request, ('Your study group has been created!'))
-        return redirect('/study_buddy/profile')
-    else:
-        study_group_form = StudyGroupForm(instance=request.user)
-
-    context = {
-        'study_group_form': study_group_form,
-    }
-
-    return render(request, 'study_buddy/create_group.html', context)
-    """
     if request.method == 'POST':
         form = StudyGroupForm(request.user, request.POST)
         if form.is_valid():
             group = form.save(commit=False)
-            new_student = Student.objects.get(user=request.user)
-            #group.student = new_student
-            #new_student.group = group
             group.save()
+            new_student = Student.objects.get(user=request.user)
             group.students.add(new_student)
+            group.owner = new_student
+            group.save()
             return redirect('/study_buddy/groups')
     else:
         form = StudyGroupForm(request.user)
@@ -123,20 +107,81 @@ def course_view(request, **kwargs):
         prefix=kwargs['course_prefix'], number=kwargs['course_number'])
     course = course_query.first()
     study_groups = StudyGroup.objects.filter(studentCourse__prefix=course.prefix, studentCourse__number=course.number)
+    student = Student.objects.get(user=request.user)
 
     return render(request, template_name, {
         'course': course_query,
         'student': request.user,
+        'student_object': student,
         'study_groups': study_groups,
     })
 
 def group_view(request, **kwargs):
     template_name = 'study_buddy/group_view.html'
     student = Student.objects.get(user=request.user)
-    #study_groups = StudyGroup.objects.filter(student__user=request.user.id)
     study_groups = student.studygroup_set.all()
 
     return render(request, template_name, {
         'student': request.user,
         'study_groups': study_groups,
     })
+
+def group_info(request, **kwargs):
+    template_name = 'study_buddy/group_info.html'
+    group_query = StudyGroup.objects.filter(id=kwargs['id'])
+    group = group_query.first()
+    studentsInGroup = group.students.all()
+    course = group.studentCourse
+    studentsInClass = StudentCourse.objects.filter(prefix=course.prefix, number=course.number)
+    student = Student.objects.get(user=request.user)
+
+    return render(request, template_name, {
+        'group': group,
+        'student': student,
+        'students': studentsInGroup,
+        'students_in_class' : studentsInClass,
+    })
+
+
+def add_member(request, **kwargs):
+    group_query = StudyGroup.objects.filter(id=kwargs['id'])
+    group = group_query.first()
+    student_query = Student.objects.filter(id=kwargs['sid'])
+    student = student_query.first()
+    group.students.add(student)
+    return redirect('/study_buddy/groups/' + kwargs['id'] + '/')
+
+
+def remove_member(request, **kwargs):
+    group_query = StudyGroup.objects.filter(id=kwargs['id'])
+    group = group_query.first()
+    student_query = Student.objects.filter(id=kwargs['sid'])
+    student = student_query.first()
+    group.students.remove(student)
+    return redirect('/study_buddy/groups/' + kwargs['id'] + '/')
+
+
+def join_group(request, **kwargs):
+    student = Student.objects.get(user=request.user)
+    group_query = StudyGroup.objects.filter(id=kwargs['id'])
+    group = group_query.first()
+    group.students.add(student)
+    return redirect('/study_buddy/groups/')
+
+
+def leave_group(request, **kwargs):
+    group_query = StudyGroup.objects.filter(id=kwargs['id'])
+    group = group_query.first()
+    student = Student.objects.get(user=request.user)
+    group.students.remove(student)
+    if student.id == group.owner.id:
+        print('Owner left!')
+        group.owner = group.students.first()
+        group.save()
+    return redirect('/study_buddy/groups/')
+
+
+
+
+
+    

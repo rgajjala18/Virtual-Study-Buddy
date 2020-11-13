@@ -30,6 +30,7 @@ PREFERRED_TIME_OF_DAY_CHOICES = (('early_morning', 'Early mornings (6AM-9AM ET)'
 
 
 class StudyGroup(models.Model):
+    owner = models.ForeignKey('Student', on_delete=models.SET_NULL, null=True, verbose_name = "Owner", related_name='has_owner')
     students = models.ManyToManyField('Student')
     studentCourse = models.ForeignKey('StudentCourse', on_delete=models.SET_NULL, null=True, verbose_name = "Course")
     courseName = models.CharField(max_length=30, verbose_name = "Course Name", default="")
@@ -38,6 +39,7 @@ class StudyGroup(models.Model):
     def student_names(self):
         return ', '.join([str(s) for s in self.students.all()])
     student_names.short_description = "Student Names"
+
 
 
 
