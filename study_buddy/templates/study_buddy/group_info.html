@@ -8,11 +8,16 @@
   </head>
   <body>
     <h1>{{ group.groupName }}</h1>
-    <h3>Members in Group: </h3>
+    <h3>Members: </h3>
     {% for s in students %}
-    <div class="card">
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
         <div class="card-body">
+            {% ifequal s.id group.owner.id %}
+            <p>Student: {{ s }} (owner)</p>
+            {% endifequal %}
+            {% ifnotequal s.id group.owner.id %}
             <p>Student: {{ s }}</p>
+            {% endifnotequal %}
             <p>Zoom ID: {{ s.zoomID }}</p>
             {% ifequal student.id s.id %}
             <a href="{% url 'study_buddy:leave_group' group.id%}"><p>Leave this Group</p></a>
