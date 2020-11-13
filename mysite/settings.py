@@ -29,7 +29,7 @@ SECRET_KEY = 'z#6si@#-rfvo-s$jm6fxuhiy43m#yr5mkl+kpx7sw)n9*xgi2_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['name-generator43.herokuapp.com']
 
 
 # Application definition
