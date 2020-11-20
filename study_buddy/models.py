@@ -27,6 +27,13 @@ PREFERRED_TIME_OF_DAY_CHOICES = (('early_morning', 'Early mornings (6AM-9AM ET)'
                                  ('night', 'Night (9PM-12AM)'))
 
 
+class Notification(models.Model):
+    title = models.CharField(max_length=100, verbose_name = "Title")
+    operation = models.CharField(max_length=10, verbose_name = "Operation")
+    viewed = models.BooleanField(default=False)
+    studentNum = models.CharField(max_length=10, null=True)
+    groupNum = models.CharField(max_length=10, null=True)
+    student = models.ForeignKey('Student', on_delete=models.SET_NULL, null=True, verbose_name = "Student")
 
 
 class StudyGroup(models.Model):
@@ -39,8 +46,6 @@ class StudyGroup(models.Model):
     def student_names(self):
         return ', '.join([str(s) for s in self.students.all()])
     student_names.short_description = "Student Names"
-
-
 
 
 

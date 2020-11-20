@@ -11,7 +11,16 @@
     </div>
     {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
-
+      {% if notifications.count > 0 %}
+        <h3>Notifications</h3>
+          {% for n in notifications %}
+            <div class="card" style="margin-top:15px; margin-bottom:15px;">
+              <div class="card-body">
+                <h6>{{n.title}}<a href="{% url 'study_buddy:show_notif' n.id%}" class="btn btn-outline-primary float-right">View</a></h6>
+              </div>
+            </div>
+          {% endfor %}
+      {% endif %}
     {% else %}
     <a href="{% provider_login_url 'google' %}">Login with Google</a>
     {% endif %}

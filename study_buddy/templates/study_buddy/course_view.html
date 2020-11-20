@@ -39,7 +39,7 @@
             <h3>{{ s.studentCourse }}</h3>
             <p>Group: {{ s.groupName }}</p>
             <p>Owner: {{ s.owner }}</p>
-            <a href="{% url 'study_buddy:join_group' s.id%}"><p>Join this Group</p></a>
+            <a href="{% url 'study_buddy:create_notif' s.owner.id student_object.id s.id 'Request'%}"><p>Request to Join this Group</p></a>
         </div>
     </div>
     {% endif %}

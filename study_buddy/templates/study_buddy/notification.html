@@ -1,0 +1,21 @@
+{% extends 'study_buddy/base.html' %}
+{% block content %}
+{% load socialaccount %} {% load static %}
+
+<div class="card" style="width: 30rem; margin-top:15px; margin-bottom:15px;">
+    <div class="card-header">
+        {{notification.title}}
+    </div>
+    {% if notification.operation != "void" %}
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Group Name: {{ group.groupName }}</li>
+      <li class="list-group-item">Course: {{ group.studentCourse }}</li>
+      <li class="list-group-item">Owner: {{ group.owner }}</li>
+    </ul>
+    {% endif %}
+</div>
+{% if notification.operation != "void" %}
+    <a href="{% url 'study_buddy:add_member' notification.groupNum notification.studentNum notification.id%}" class="btn btn-primary active" style="margin-top:15px; margin-bottom:15px; margin-right:10px;"><h7>Accept {{notification.operation}}</h7></a>
+{% endif %}
+<a href="{% url 'study_buddy:delete_notif' notification.id%}" class="btn btn-primary active" style="margin-top:15px; margin-bottom:15px;"><h7>Mark as Read</h7></a>
+{% endblock %}

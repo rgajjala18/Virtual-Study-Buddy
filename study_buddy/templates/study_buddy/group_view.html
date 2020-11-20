@@ -7,7 +7,7 @@
     <title>Groups</title>
   </head>
   <body>
-    <a href="{% url 'study_buddy:create_group' %}" class="btn btn-primary active" style="margin-top:15px; margin-bottom:15px;"><h4>Create New Study Group</h4></a>
+    <a href="{% url 'study_buddy:create_group' %}" class="btn btn-primary active" style="margin-top:15px; margin-bottom:15px;"><h5>Create New Study Group</h5></a>
     {% if study_groups.exists %}
     <h1>My Groups</h1>
     {% endif %}
@@ -20,7 +20,7 @@
             <a href="{% url 'study_buddy:group_info' s.id %}" class="btn"><h3>{{ s.studentCourse }}</h3></a>
             <p>Group: {{ s.groupName }}</p>
             <p>Owner: {{ s.owner }}</p>
-            <a href="{% url 'study_buddy:leave_group' s.id%}"><p>Leave this Group</p></a>
+            <a href="{% url 'study_buddy:leave_group' s.id%}" onclick="return confirm('Are you sure?');"><p>Leave this Group</p></a>
         </div>
     </div>
     {% endfor %}
