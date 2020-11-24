@@ -6,7 +6,11 @@
     <title>Google Registration</title>
   </head>
   <body>
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
+      <div class="card-header">
     <h1><b>Study Buddy Finder</b></h1>
+  </div>
+  <br/>
     {% if user.is_authenticated %}
     <h2>Welcome, {{ user.username }}!</h2>
     <br/>
@@ -43,7 +47,7 @@
     {% endif %}
     <br/>
     This Study Buddy web application was created by Grace Brickley, Ruthvik Gajjala, and Jason Yu.
-
+  </div>          
     
 
   </body>

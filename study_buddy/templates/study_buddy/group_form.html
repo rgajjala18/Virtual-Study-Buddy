@@ -2,11 +2,17 @@
 {% block content %}
 {% load socialaccount %}
 
-  <h1>Create New Group</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="save">
-    <a href="{% url 'study_buddy:create_group' %}">cancel</a>
-  </form>
+<div class="card" style="margin-top:15px; margin-bottom:15px;">
+  <div class="card-header">
+    <h1><b>Create New Group</b></h1>
+  </div>
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Save">
+      <a href="{% url 'study_buddy:group_page' %}">back to the list</a>
+    </form>
+  </div>
+</div>
 {% endblock %}

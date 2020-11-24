@@ -2,15 +2,18 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
-<div class="card-body">
-  <h3>Create New Study Group</h3>
-  <form method="post" style="margin-top: 1.3em;">
-  <table>
-    {{ study_group_form | crispy }}
-    {% csrf_token %}
-    <button type="submit" style="margin-top:15px;" class="btn btn-primary  btn-lg">Save</button>
-  </table>
-  </form>
+<div class="card" style="margin-top:15px; margin-bottom:15px;">
+  <div class="card-header">
+    <h1><b>Create New Study Group</b></h1>
+  </div>
+  <div class="card-body">
+    <form method="post" style="margin-top: 1.3em;">
+    <table>
+      {{ study_group_form | crispy }}
+      {% csrf_token %}
+      <button type="submit" style="margin-top:15px;" class="btn btn-primary  btn-lg">Save</button>
+    </table>
+    </form>
+  </div>
 </div>
 {% endblock %}

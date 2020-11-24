@@ -4,22 +4,33 @@
 
 <html>
   <head>
-    <title>Course</title>
+    <title>{{ course.first.prefix }} {{ course.first.number }}</title>
   </head>
   <body>
+    
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
+      <div class="card-header">
+        <h1><b>{{ course.first.prefix }} {{ course.first.number }} - {{ full_course.title }}</b></h1>
+      </div>
     {% if course.exists %}
-    <h1>List of students taking {{ course.first.prefix }} {{ course.first.number }}</h1>
+    <br/>
+    <h2>List of students taking {{ course.first.prefix }} {{ course.first.number }}:</h2>
     {% endif %}
     {% if not course.exists %}
     <h3>There are no other students taking {{ course.first.prefix }} {{ course.first.number }}.</h3>
     {% endif %}
     {% for c in course %}
     {% ifnotequal c.student.id student.id %}
-    <div class="card" style="margin-top:15px; margin-bottom:15px;">
+    <div class="card hover" style="margin-top:15px; margin-bottom:15px;">
         <div class="card-body">
             <h3>{{ c.student }}</h3>
             <p>Class of {{ c.student.graduationYear }}</p>
             <p>{{ c.student.bio }}</p>
+            <ul>
+              <li>Preferred Size: {{ c.preferredSize }}</li>
+              <li>Preferred Frequency: {{ c.preferredFrequency }}</li>
+              <li>Preferred Time: {{ c.preferredTimeOfDay }}</li>
+            </ul>
         </div>
     </div>
     {% endifnotequal %}
@@ -27,7 +38,8 @@
 
   
     {% if study_groups.exists %}
-    <h1>List of study groups:</h1>
+    <hr/>
+    <h2>List of study groups:</h2>
     {% endif %}
     {% if not study_groups.exists %}
     <h3>There are no study groups for this course.</h3>
@@ -35,10 +47,9 @@
     {% for s in study_groups %}
     {% if student_object not in s.students.all %}
       {% if s.owner.id is not None %}
-        <div class="card" style="margin-top:15px; margin-bottom:15px;">
+        <div class="card hover" style="margin-top:15px; margin-bottom:15px;">
             <div class="card-body">
-                <h3>{{ s.studentCourse }}</h3>
-                <p>Group: {{ s.groupName }}</p>
+                <h3>{{ s.groupName }}</h3>
                 <p>Owner: {{ s.owner }}</p>
                 <a href="{% url 'study_buddy:create_notif' s.owner.id student_object.id s.id 'Request'%}"><p>Request to Join this Group</p></a>
             </div>
@@ -46,10 +57,9 @@
       {% endif %}
     {% endif %}
     {% if student_object in s.students.all %}
-    <div class="card" style="margin-top:15px; margin-bottom:15px;">
+    <div class="card hover" style="margin-top:15px; margin-bottom:15px;">
         <div class="card-body">
-            <h3>{{ s.studentCourse }}</h3>
-            <p>Group: {{ s.groupName }}</p>
+            <h3>{{ s.groupName }}</h3>
             <p>Owner: {{ s.owner }}</p>
             <p>You are already in this group!</p>
         </div>
@@ -59,6 +69,7 @@
     <a href="{% url 'study_buddy:create_group' %}" class="btn btn-primary active" style="margin-top:15px; margin-bottom:15px;"><h4>Create New Study Group</h4></a>
       
     </div>
+  </div>
   </body>
   
 </html>

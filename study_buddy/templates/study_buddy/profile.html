@@ -15,15 +15,15 @@
         <p>(<a href="{% url 'study_buddy:update_profile' %}">Edit</a>)</p>
       </div>
       
-      <hr/>
+      <br/>
       {% else %}
       <div class="card-header">
         <h1><b>Your Profile</b></h1>
         <p>(<a href="{% url 'study_buddy:update_profile' %}">Edit</a>)</p>
-        <p>You haven't added your information yet! Click <a href="{% url 'study_buddy:update_profile' %}">here</a> to update your profile.</p>
+        
       </div>
-      
-      <hr/>
+      <br/>
+      <h5>You haven't added your information yet! Click <a href="{% url 'study_buddy:update_profile' %}">here</a> to update your profile.</h5>
       {% endif %}
       {% if user.is_authenticated %}
       <div class="card-body">
@@ -78,26 +78,24 @@
             <p>{{ student.bio }}</p>
           </div>
         {% endif %}
-        <br />
         <a style="margin-top:15px;" href="{% url 'study_buddy:update_profile' %}" class="btn btn-primary">Edit Info</a>
       </div>
       <div class="card-header">
         <h1><b>Courses</b></h1>
         <p>(<a href="{% url 'study_buddy:update_courses' %}">Edit</a>)</p>
       </div>
-      <hr/>
       <div class="card-body">
           {% if student.has_courses.all %}
           {% for course in student.has_courses.all %}
-            
-              <a href="{% url 'study_buddy:course_page' course.prefix course.number %}" class="btn"><h3>{{ course.prefix }} {{ course.number }}</h3></a>
-              <br/>
+              <div class="card hover">
+              <ul style="padding:0; list-style-type:none;"><li style="list-style-type: none;"><a href="{% url 'study_buddy:course_page' course.prefix course.number %}" class="btn"><h3 style="color:#007BFF ">{{ course.prefix }} {{ course.number }}</h3></a></li></ul>
               <ul>
                 <li>Preferred Size: {{ course.preferredSize }}</li>
                 <li>Preferred Frequency: {{ course.preferredFrequency }}</li>
                 <li>Preferred Time Of Day: {{ course.preferredTimeOfDay }}</li>
               </ul>
-              <hr/>
+            </div>
+            <br/>
           {% endfor %}
           {% endif %}
         <a style="margin-top:15px;" href="{% url 'study_buddy:update_courses' %}" class="btn btn-primary">

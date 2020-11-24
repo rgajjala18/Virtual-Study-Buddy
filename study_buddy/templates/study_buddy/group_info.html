@@ -8,44 +8,55 @@
   </head>
   <body>
     <div class="card" style="margin-top:15px; margin-bottom:15px;">
-      <div class="card-body">
-        <h2>Group Name: {{ group.groupName }}</h2>
+      <div class="card-header">
+        <h1><b>{{ group.groupName }} - {{ group.studentCourse }} group</b></h1>
       </div>
-    </div>
-    <h3>Members</h3>
+      <br/>
+    <h2>Members</h2>
+    <br/>
     {% for s in students %}
-    <div class="card" style="margin-top:15px; margin-bottom:15px;">
-        <div class="card-body">
+    
+        <div class="card hover">
             {% ifequal s.id group.owner.id %}
-            <p>Student: {{ s }} (owner)</p>
+            <h3>{{ s }} (owner)</h3>
             {% endifequal %}
             {% ifnotequal s.id group.owner.id %}
-            <p>Student: {{ s }}</p>
+            <h3>{{ s }}</h3>
             {% endifnotequal %}
-            <p>Zoom ID: {{ s.zoomID }}</p>
-            <p>Computing ID: {{ s.computingID }}</p>
-            <p>Phone #: {{ s.phone }}</p>
+            <ul>
+              <li>Zoom Link: https://zoom.us/j/{{ s.zoomID }}</li>
+              <li>Computing ID: {{ s.computingID }}</li>
+              <li>Phone Number: {{ s.phone }}</li>
+            </ul>
             {% ifequal student.id s.id %}
-            <a href="{% url 'study_buddy:leave_group' group.id%}" onclick="return confirm('Are you sure?');"><p>Leave this Group</p></a>
+            <a href="{% url 'study_buddy:leave_group' group.id%}" onclick="return confirm('Are you sure?');" style="color:red"><p>- Leave this Group</p></a>
             {% endifequal %}
             {% ifequal student.id group.owner.id %}
             {% ifnotequal student.id s.id %}
-            <a href="{% url 'study_buddy:remove_member' group.id s.id%}" onclick="return confirm('Are you sure?');"><p>Remove this Member</p></a>
+            <a href="{% url 'study_buddy:remove_member' group.id s.id%}" onclick="return confirm('Are you sure?');" style="color:red"><p>- Remove this Member</p></a>
             {% endifnotequal %}
             {% endifequal %}
         </div>
-    </div>
+        <br/>
     {% endfor %}
-    <h3>Available Members</h3>
+    <hr/>
+    <br/>
+    <h2>Available Members</h2>
+    <br/>
     {% for c in students_in_class %}
     {% if c.student not in students %}
-    <div class="card">
-        <div class="card-body">
-            <p>{{ c.student }}</p>
+        <div class="card hover">
+            <h3>{{ c.student }}</h3>
             <p>Class of {{ c.student.graduationYear }}</p>
-            <a href="{% url 'study_buddy:create_notif' c.student.id c.student.id group.id 'Invite'%}" onclick="return confirm('Are you sure?');"><p>Invite Member to Group</p></a>
-        </div>
+            <p>{{ c.student.bio }}</p>
+            <ul>
+              <li>Preferred Size: {{ c.preferredSize }}</li>
+              <li>Preferred Frequency: {{ c.preferredFrequency }}</li>
+              <li>Preferred Time: {{ c.preferredTimeOfDay }}</li>
+            </ul>
+            <a href="{% url 'study_buddy:create_notif' c.student.id c.student.id group.id 'Invite'%}" onclick="return confirm('Are you sure?');"><p>+ Invite Member to Group</p></a>
     </div>
+    <br/>
     {% endif %}
     {% endfor %}
   </body>

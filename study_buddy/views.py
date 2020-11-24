@@ -19,12 +19,12 @@ def home_page(request):
     notifications = Notification.objects.none()
     if request.user.is_authenticated:
         student = Student.objects.get(user=request.user)
-        notifications = Notification.objects.filter(student=student, viewed=False)
+        notifications = Notification.objects.filter(
+            student=student, viewed=False)
 
-    return render(request, template_name,{
-        "notifications":notifications,
+    return render(request, template_name, {
+        "notifications": notifications,
     })
-
 
 
 @login_required
@@ -41,18 +41,24 @@ def create_notif(request, **kwargs):
 
     current_student = Student.objects.get(user=request.user)
     operation = kwargs['op']
-    title=""
-    current_title=""
+    title = ""
+    current_title = ""
 
-    if kwargs['op']=='Request':
-        title = str(current_student) + " would like to join " + group.groupName + "!"
-        current_title = "You requested to join " + str(group.owner) + "'s \'" + group.groupName + "\' study group."
-    elif kwargs['op']=='Invite':
-        title = str(current_student) + " has invited you to " + group.groupName + "!"
-        current_title = "You invited " + str(req) + " to your \'" + group.groupName + "\' study group."
+    if kwargs['op'] == 'Request':
+        title = str(current_student) + " would like to join " + \
+            group.groupName + "!"
+        current_title = "You requested to join " + \
+            str(group.owner) + "'s \'" + group.groupName + "\' study group."
+    elif kwargs['op'] == 'Invite':
+        title = str(current_student) + " has invited you to " + \
+            group.groupName + "!"
+        current_title = "You invited " + \
+            str(req) + " to your \'" + group.groupName + "\' study group."
 
-    Notification.objects.create(student=student, title=title, studentNum=studentNum, groupNum=groupNum, viewed=False, operation=operation)
-    Notification.objects.create(student=current_student, title=current_title, viewed=False, operation="void")
+    Notification.objects.create(student=student, title=title, studentNum=studentNum,
+                                groupNum=groupNum, viewed=False, operation=operation)
+    Notification.objects.create(
+        student=current_student, title=current_title, viewed=False, operation="void")
     return redirect('/study_buddy/groups/')
 
 
@@ -66,7 +72,8 @@ def show_notif(request, **kwargs):
     if n.student.id != current_student.id:
         return redirect('/study_buddy/')
 
-    return render(request, template_name, {'notification' : n, 'group' : group,})
+    return render(request, template_name, {'notification': n, 'group': group, })
+
 
 def delete_notif(request, **kwargs):
     n = Notification.objects.get(id=kwargs['nid'])
@@ -77,7 +84,6 @@ def delete_notif(request, **kwargs):
     n.viewed = True
     n.save()
     return redirect('/study_buddy/')
-
 
 
 @login_required
@@ -95,8 +101,6 @@ def create_study_group(request):
     else:
         form = StudyGroupForm(request.user)
     return render(request, 'study_buddy/group_form.html', {'form': form})
-    
-
 
 
 def profile_view(request):
@@ -167,7 +171,10 @@ def course_view(request, **kwargs):
     course_query = StudentCourse.objects.filter(
         prefix=kwargs['course_prefix'], number=kwargs['course_number'])
     course = course_query.first()
-    study_groups = StudyGroup.objects.filter(studentCourse__prefix=course.prefix, studentCourse__number=course.number)
+    full_course = Course.objects.get(
+        prefix=kwargs['course_prefix'], number=kwargs['course_number'])
+    study_groups = StudyGroup.objects.filter(
+        studentCourse__prefix=course.prefix, studentCourse__number=course.number)
     student = Student.objects.get(user=request.user)
 
     return render(request, template_name, {
@@ -175,17 +182,19 @@ def course_view(request, **kwargs):
         'student': request.user,
         'student_object': student,
         'study_groups': study_groups,
+        'full_course': full_course,
     })
+
 
 def group_view(request, **kwargs):
     template_name = 'study_buddy/group_view.html'
     student = Student.objects.get(user=request.user)
     study_groups = student.studygroup_set.all()
-
     return render(request, template_name, {
         'student': request.user,
         'study_groups': study_groups,
     })
+
 
 def group_info(request, **kwargs):
     template_name = 'study_buddy/group_info.html'
@@ -193,7 +202,8 @@ def group_info(request, **kwargs):
     group = group_query.first()
     studentsInGroup = group.students.all()
     course = group.studentCourse
-    studentsInClass = StudentCourse.objects.filter(prefix=course.prefix, number=course.number)
+    studentsInClass = StudentCourse.objects.filter(
+        prefix=course.prefix, number=course.number)
     student = Student.objects.get(user=request.user)
     if student not in studentsInGroup:
         return redirect('/study_buddy/groups/')
@@ -202,7 +212,7 @@ def group_info(request, **kwargs):
         'group': group,
         'student': student,
         'students': studentsInGroup,
-        'students_in_class' : studentsInClass,
+        'students_in_class': studentsInClass,
     })
 
 
@@ -215,7 +225,8 @@ def add_member(request, **kwargs):
 
     notif = notif_query.first()
     current_student = Student.objects.get(user=request.user)
-    notifications = Notification.objects.filter(student=current_student, viewed=False)
+    notifications = Notification.objects.filter(
+        student=current_student, viewed=False)
     if notif not in notifications:
         return redirect('/study_buddy/')
 
@@ -258,9 +269,3 @@ def leave_group(request, **kwargs):
         group.owner = group.students.first()
         group.save()
     return redirect('/study_buddy/groups/')
-
-
-
-
-
-    
