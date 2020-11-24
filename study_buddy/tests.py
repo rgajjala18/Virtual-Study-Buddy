@@ -130,6 +130,14 @@ class UrlsTests(TestCase):
         url = reverse_lazy('study_buddy:update_courses')
         self.assertEqual(url, '/study_buddy/profile/update_courses/')
 
+    def test_url4(self):
+        url = reverse_lazy('study_buddy:group_page')
+        self.assertEqual(url, '/study_buddy/groups/')
+
+    def test_url5(self):
+        url = reverse_lazy('study_buddy:create_group')
+        self.assertEqual(url, '/study_buddy/course/create_group/')
+
 '''class ViewsTests(unittest.TestCase):
 
     def setUp(self):
