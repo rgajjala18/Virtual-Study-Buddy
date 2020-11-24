@@ -3,14 +3,14 @@ from .models import *
 from django.contrib.auth import get_user_model
 from study_buddy.forms import *
 import unittest
-from selenium import webdriver
+'''from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from selenium.webdriver.common.by import By
+from selenium.webdriver.common.by import By'''
 import time
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from . import views
 
 
@@ -105,7 +105,7 @@ class FormsTests(TestCase):
         form = ProfileForm(data=data)
         self.assertFalse(form.is_valid())
 
-    def test_invalid_study_group_form(self):
+    def test_valid_study_group_form(self):
         s = Student.objects.create(email='johnsmith@gmail.com')
         t = StudentCourse.objects.create(student=s, prefix="CS", number=3240)
         g = StudyGroup.objects.create(
@@ -113,20 +113,22 @@ class FormsTests(TestCase):
         data = {'studentCourse': g.studentCourse,
                 'courseName': g.courseName, 'groupName': g.groupName}
         form = StudyGroupForm(user=s.user, data=data)
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
 
 
-'''
 class UrlsTests(TestCase):
 
     def test_url(self):
-        url1 = reverse(views.profile_view)
-        self.assertEqual(url1, 'profile/')
+        url1 = reverse_lazy('study_buddy:profile')
+        self.assertEqual(url1, '/study_buddy/profile/')
 
     def test_url2(self):
-        url = reverse(views.update_profile)
-        self.assertEqual(url, 'update_profile/')
-'''
+        url = reverse_lazy('study_buddy:update_profile')
+        self.assertEqual(url, '/study_buddy/profile/update_profile/')
+
+    def test_url3(self):
+        url = reverse_lazy('study_buddy:update_courses')
+        self.assertEqual(url, '/study_buddy/profile/update_courses/')
 
 '''class ViewsTests(unittest.TestCase):
 
