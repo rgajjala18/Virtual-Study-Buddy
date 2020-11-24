@@ -3,14 +3,14 @@ from .models import *
 from django.contrib.auth import get_user_model
 from study_buddy.forms import *
 import unittest
-from selenium import webdriver
+'''from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from selenium.webdriver.common.by import By
+from selenium.webdriver.common.by import By'''
 import time
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from . import views
 
 
@@ -116,26 +116,34 @@ class FormsTests(TestCase):
         self.assertFalse(form.is_valid())
 
 
-'''
 class UrlsTests(TestCase):
 
     def test_url(self):
-        url1 = reverse(views.profile_view)
-        self.assertEqual(url1, 'profile/')
+        url1 = reverse_lazy('study_buddy:profile')
+        self.assertEqual(url1, '/study_buddy/profile/')
 
     def test_url2(self):
-        url = reverse(views.update_profile)
-        self.assertEqual(url, 'update_profile/')
-'''
+        url = reverse_lazy('study_buddy:update_profile')
+        self.assertEqual(url, '/study_buddy/profile/update_profile/')
+
+    def test_url3(self):
+        url = reverse_lazy('study_buddy:update_courses')
+        self.assertEqual(url, '/study_buddy/profile/update_courses/')
+
+    def test_url4(self):
+        url = reverse_lazy('study_buddy:group_page')
+        self.assertEqual(url, '/study_buddy/groups/')
+
+    def test_url5(self):
+        url = reverse_lazy('study_buddy:create_group')
+        self.assertEqual(url, '/study_buddy/course/create_group/')
+
 
 '''class ViewsTests(unittest.TestCase):
-
     def setUp(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
-
     def test_signup_fire(self):
         self.driver.get("https://name-generator43.herokuapp.com/")
-
         username = 'gracebrickley'
         password = '09231999kgb'
         self.driver.get('https://stackoverflow.com/users/signup?ssrc=head&returnurl=%2fusers%2fstory%2fcurrent%27')
@@ -149,19 +157,16 @@ class UrlsTests(TestCase):
         time.sleep(2)
         self.driver.get("https://name-generator43.herokuapp.com/study_buddy")
         time.sleep(5)
-
         self.driver.get('https://accounts.google.com/o/oauth2/auth/identifier?client_id=717762328687-iludtf96g1hinl76e4lc1b9a82g457nn.apps.googleusercontent')
                 '.com&scope=profile%20email&redirect_uri=https%3A%2F%2Fstackauth.com%2Fauth%2Foauth2%2Fgoogle&state=%7B%22sid%22%3A1%2C%22st%22%3A%2'
                 '259%3A3%3Abbc%2C16%3A561fd7d2e94237c0%2C10%3A1599663155%2C16%3Af18105f2b08c3ae6%2C2f06af367387a967072e3124597eeb4e36c2eff92d3eef697'
                 '1d95ddb5dea5225%22%2C%22cdl%22%3Anull%2C%22cid%22%3A%22717762328687-iludtf96g1hinl76e4lc1b9a82g457nn.apps.googleusercontent.com%22%'
                 '2C%22k%22%3A%22Google%22%2C%22ses%22%3A%2226bafb488fcc494f92c896ee923849b6%22%7D&response_type=code&flowName=GeneralOAuthFlow')
-
         username = 'gracebrickley'
         password = '09231999kgb'
         self.driver.find_element_by_name("identifier").send_keys(username)
         WebDriverWait(self.driver, 10).until(expected_conditions.element_to_be_clickable((By.XPATH, "//*[@id='identifierNext']/div/button/div[2]"))).click()
         self.driver.implicitly_wait(4)
-
         try:
             self.driver.find_element_by_name("password").send_keys(password)
             WebDriverWait(self.driver, 2).until(expected_conditions.element_to_be_clickable((By.XPATH, "//*[@id='passwordNext']/div/button/div[2]"))).click()
@@ -179,14 +184,11 @@ class UrlsTests(TestCase):
         except TimeoutException:
             print('\nUsername/Password seems to be incorrect, please re-check\nand Re-Run the program.')
             exit()
-
         
-
         self.driver.find_element_by_id('user').send_keys("test user")
         self.driver.find_element_by_id('email').send_keys("test email")
         self.driver.find_element_by_id('submit').click()
         self.assertIn("http://localhost:8000/", self.driver.current_url)
-
     def tearDown(self):
         self.driver.quit
 '''
