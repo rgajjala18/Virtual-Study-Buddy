@@ -23,6 +23,8 @@
             <p>Student: {{ s }}</p>
             {% endifnotequal %}
             <p>Zoom ID: {{ s.zoomID }}</p>
+            <p>Computing ID: {{ s.computingID }}</p>
+            <p>Phone #: {{ s.phone }}</p>
             {% ifequal student.id s.id %}
             <a href="{% url 'study_buddy:leave_group' group.id%}" onclick="return confirm('Are you sure?');"><p>Leave this Group</p></a>
             {% endifequal %}

@@ -62,11 +62,18 @@ def show_notif(request, **kwargs):
     groupNum = n.groupNum
     group_query = StudyGroup.objects.filter(id=groupNum)
     group = group_query.first()
+    current_student = Student.objects.get(user=request.user)
+    if n.student.id != current_student.id:
+        return redirect('/study_buddy/')
 
     return render(request, template_name, {'notification' : n, 'group' : group,})
 
 def delete_notif(request, **kwargs):
     n = Notification.objects.get(id=kwargs['nid'])
+    current_student = Student.objects.get(user=request.user)
+    if n.student.id != current_student.id:
+        return redirect('/study_buddy/')
+
     n.viewed = True
     n.save()
     return redirect('/study_buddy/')
@@ -205,7 +212,13 @@ def add_member(request, **kwargs):
     student_query = Student.objects.filter(id=kwargs['sid'])
     student = student_query.first()
     notif_query = Notification.objects.filter(id=kwargs['nid'])
-    notif = student_query.first()
+
+    notif = notif_query.first()
+    current_student = Student.objects.get(user=request.user)
+    notifications = Notification.objects.filter(student=current_student, viewed=False)
+    if notif not in notifications:
+        return redirect('/study_buddy/')
+
     notif.viewed = True
     notif.save()
     group.students.add(student)
@@ -217,6 +230,10 @@ def remove_member(request, **kwargs):
     group = group_query.first()
     student_query = Student.objects.filter(id=kwargs['sid'])
     student = student_query.first()
+    studentsInGroup = group.students.all()
+    current_student = Student.objects.get(user=request.user)
+    if current_student not in studentsInGroup:
+        return redirect('/study_buddy/groups/')
     group.students.remove(student)
     return redirect('/study_buddy/groups/' + kwargs['id'] + '/')
 
@@ -233,6 +250,9 @@ def leave_group(request, **kwargs):
     group_query = StudyGroup.objects.filter(id=kwargs['id'])
     group = group_query.first()
     student = Student.objects.get(user=request.user)
+    studentsInGroup = group.students.all()
+    if student not in studentsInGroup:
+        return redirect('/study_buddy/groups/')
     group.students.remove(student)
     if student.id == group.owner.id:
         group.owner = group.students.first()

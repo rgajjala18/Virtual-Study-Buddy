@@ -2,42 +2,7 @@
 {% block content %}
 
 {% load socialaccount %} {% load static %}
-<!--
-<html>
-  <head>
-    <title>Profile</title>
-  </head>
-  <body>
-    <h1>{{ student.firstName }}'s Profile</h1>
-    <hr/>
-    {% if user.is_authenticated %}
-    <h2>Student Information</h2>
-    <p>First Name: {{ student.firstName }}</p>
-    <p>Last Name: {{ student.lastName }}</p>
-    <p>Computing ID: {{ student.computingID }}</p>
-    <p>Graduation Year: {{ student.graduationYear }}</p>
-    <h2>Contact Information</h2>
-    <p>Email Address: {{ student.email }}</p>
-    <p>Phone Number: {{ student.phone }}</p>
-    <p>Zoom ID: {{ student.zoomID }}</p>
-    <h2>Bio</h2>
-    <p>{{ student.bio }}</p>
-    {% endif %}
-  </body>
 
-  <a href="{% url 'study_buddy:update_profile' %}" class="btn btn-primary">Edit Info</a>
-
-  <div class="card-header">
-        Contact Information
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Email Address: {{ student.email }}</li>
-        <li class="list-group-item">Phone Number: {{ student.phone }}</li>
-        <li class="list-group-item">Computing ID: {{ student.computingID }}</li>
-      </ul>
-
-</html>
--->
 
 <html>
   <head>

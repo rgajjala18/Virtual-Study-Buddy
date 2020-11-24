@@ -70,9 +70,6 @@ class Student(models.Model):
     graduationYear = models.IntegerField(
         null=True, verbose_name="Graduation Year", validators=[MinValueValidator(datetime.date.today().year), MaxValueValidator(datetime.date.today().year + 8)])
     bio = models.CharField(max_length=4000, verbose_name="Bio")
-    #group = models.ForeignKey(StudyGroup, related_name="has_students",on_delete=models.SET_NULL, null=True)
-    # courseList = ...
-    # profileIsComplete = models.BooleanField()
 
     def __str__(self):
         return (self.firstName + " " + self.lastName)
