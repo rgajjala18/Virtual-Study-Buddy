@@ -7,12 +7,24 @@
     <title>Profile</title>
   </head>
   <body>
-    <div class="card">
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
+      
+      {% if student.firstName %}
       <div class="card-header">
         <h1><b>{{ student.firstName }}'s Profile</b></h1>
         <p>(<a href="{% url 'study_buddy:update_profile' %}">Edit</a>)</p>
       </div>
+      
       <hr/>
+      {% else %}
+      <div class="card-header">
+        <h1><b>Your Profile</b></h1>
+        <p>(<a href="{% url 'study_buddy:update_profile' %}">Edit</a>)</p>
+        <p>You haven't added your information yet! Click <a href="{% url 'study_buddy:update_profile' %}">here</a> to update your profile.</p>
+      </div>
+      
+      <hr/>
+      {% endif %}
       {% if user.is_authenticated %}
       <div class="card-body">
         <table class="table">

@@ -1,8 +1,7 @@
 from django.test import TestCase
-from .models import Student
-from .models import Course
+from .models import *
 from django.contrib.auth import get_user_model
-from study_buddy.forms import UserForm, ProfileForm
+from study_buddy.forms import *
 import unittest
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -13,6 +12,7 @@ from selenium.webdriver.common.by import By
 import time
 from django.urls import reverse
 from . import views
+
 
 class UsersManagersTests(TestCase):
 
@@ -34,9 +34,10 @@ class UsersManagersTests(TestCase):
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
 
+
 class ModelsTests(TestCase):
 
-    def create_student(self, first="John", last="Smith"):
+    def create_student(self, first="John", last="Smith", zoomID="1234567890"):
         return Student.objects.create(firstName=first, lastName=last)
 
     def test_student_name(self):
@@ -52,27 +53,71 @@ class ModelsTests(TestCase):
         self.assertTrue(isinstance(t, Course))
         self.assertEqual(t.__str__(), "CS 3240")
 
+
 class FormsTests(TestCase):
 
     def test_valid_form(self):
         s = Student.objects.create(email='johnsmith@gmail.com')
-        data = {'email': s.email,}
+        data = {'email': s.email, }
         form = UserForm(data=data)
         self.assertTrue(form.is_valid())
 
     def test_valid_form_pt2(self):
-        s = Student.objects.create(firstName='john', lastName='Smith', computingID='jds4fk', phone='8044325324', zoomID='94392843', graduationYear='2022', bio='Hi!', )
-        data = {'firstName': s.firstName, 'lastName': s.lastName, 'computingID': s.computingID, 'phone': s.phone, 'zoomID': s.zoomID, 'graduationYear': s.graduationYear, 'bio': s.bio,}
+        s = Student.objects.create(firstName='john', lastName='Smith', computingID='jds4fk',
+                                   phone='8044325324', zoomID='1234567890', graduationYear='2022', bio='Hi!', )
+        data = {'firstName': s.firstName, 'lastName': s.lastName, 'computingID': s.computingID,
+                'phone': s.phone, 'zoomID': s.zoomID, 'graduationYear': s.graduationYear, 'bio': s.bio, }
         form = ProfileForm(data=data)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form(self):
-        s = Student.objects.create(email='johnsmith@gmail.com')
-        data = {'name': s.email, }
+        s = Student.objects.create(
+            email='johnsmith@gmail.com', zoomID="1234567890")
+        data = {'name': s.email, 'zoomID': s.zoomID}
         form = ProfileForm(data=data)
         self.assertFalse(form.is_valid())
 
-'''class UrlsTests(TestCase):
+    def test_invalid_form2(self):
+        s = Student.objects.create(
+            email='johnsmith@gmail.com', zoomID="1234567890", graduationYear="2019")
+        data = {'name': s.email, 'zoomID': s.zoomID}
+        form = ProfileForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_invalid_form3(self):
+        s = Student.objects.create(
+            email='johnsmithgmail.com', zoomID="1234567890", graduationYear="2019")
+        data = {'name': s.email, 'zoomID': s.zoomID}
+        form = ProfileForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_invalid_form4(self):
+        s = Student.objects.create(
+            email='johnsmith@gmail.com', zoomID="123456789012")
+        data = {'name': s.email, 'zoomID': s.zoomID}
+        form = ProfileForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_invalid_form5(self):
+        s = Student.objects.create(
+            email='johnsmith@gmail.com', zoomID="123456789012", computingID="abc1c")
+        data = {'name': s.email, 'zoomID': s.zoomID}
+        form = ProfileForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_invalid_study_group_form(self):
+        s = Student.objects.create(email='johnsmith@gmail.com')
+        t = StudentCourse.objects.create(student=s, prefix="CS", number=3240)
+        g = StudyGroup.objects.create(
+            owner=s, studentCourse=t, courseName="Software Engineering", groupName="Name Generator")
+        data = {'studentCourse': g.studentCourse,
+                'courseName': g.courseName, 'groupName': g.groupName}
+        form = StudyGroupForm(user=s.user, data=data)
+        self.assertFalse(form.is_valid())
+
+
+'''
+class UrlsTests(TestCase):
 
     def test_url(self):
         url1 = reverse(views.profile_view)
@@ -82,6 +127,7 @@ class FormsTests(TestCase):
         url = reverse(views.update_profile)
         self.assertEqual(url, 'update_profile/')
 '''
+
 '''class ViewsTests(unittest.TestCase):
 
     def setUp(self):

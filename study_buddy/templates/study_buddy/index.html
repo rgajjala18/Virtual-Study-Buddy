@@ -6,11 +6,28 @@
     <title>Google Registration</title>
   </head>
   <body>
-    <div class="card-header">
-      <h1><b>Study Buddy Finder</b></h1>
-    </div>
+    <h1><b>Study Buddy Finder</b></h1>
     {% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}!</p>
+    <h2>Welcome, {{ user.username }}!</h2>
+    <br/>
+    <div class="card text-center hover">
+        <div class="card-body">
+            <a href="{% url 'study_buddy:profile' %}"><h3>View Profile</h3></a>
+        </div>
+      </div>
+      <br/>
+      <div class="card text-center hover">
+        <div class="card-body">
+            <a href="{% url 'study_buddy:update_courses' %}"><h3>Add Courses</h3></a>
+        </div>
+      </div>
+      <br/>
+      <div class="card text-center hover">
+        <div class="card-body">
+            <a href="{% url 'study_buddy:group_page' %}"><h3>My Groups</h3></a>
+        </div>
+      </div>
+      <br/>
       {% if notifications.count > 0 %}
         <h3>Notifications</h3>
           {% for n in notifications %}
@@ -22,8 +39,13 @@
           {% endfor %}
       {% endif %}
     {% else %}
-    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    <a href="{% provider_login_url 'google' %}"><h2>Login with Google</h2></a>
     {% endif %}
+    <br/>
+    This Study Buddy web application was created by Grace Brickley, Ruthvik Gajjala, and Jason Yu.
+
+    
+
   </body>
 </html>
 

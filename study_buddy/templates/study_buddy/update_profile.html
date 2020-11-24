@@ -3,14 +3,32 @@
 {% block content %}
 
 
-<div class="card-body">
-  <h3>Update Profile</h3>
+<div class="card" style="margin-top:15px; margin-bottom:15px;">
+  <div class="card-header">
+    <h1><b>Update Profile</b></h1>
+  </div>
+  <div class="card-body">
   <form method="post" style="margin-top: 1.3em;">
-  <table>
-    {{ profile_form | crispy }}
+  <table class="table">
+    
+      {% for field in profile_form %}
+          <tr class="{% cycle 'row1' 'row2' %} formset_row">
+              {# Include the hidden fields in the form #}
+              {% if forloop.first %}
+                  {% for hidden in form.hidden_fields %}
+                      {{ hidden }}
+                  {% endfor %}
+              {% endif %}
+              {{ field.errors.as_ul }}
+              {{ field|as_crispy_field }}
+          </tr>
+          <br/>
+      {% endfor %}
+  
     {% csrf_token %}
     <button type="submit" style="margin-top:15px;" class="btn btn-primary  btn-lg">Save</button>
   </table>
   </form>
+  </div>
 </div>
 {% endblock %}

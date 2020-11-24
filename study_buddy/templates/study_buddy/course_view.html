@@ -15,7 +15,7 @@
     {% endif %}
     {% for c in course %}
     {% ifnotequal c.student.id student.id %}
-    <div class="card">
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
         <div class="card-body">
             <h3>{{ c.student }}</h3>
             <p>Class of {{ c.student.graduationYear }}</p>
@@ -34,7 +34,7 @@
     {% endif %}
     {% for s in study_groups %}
     {% if student_object not in s.students.all %}
-    <div class="card">
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
         <div class="card-body">
             <h3>{{ s.studentCourse }}</h3>
             <p>Group: {{ s.groupName }}</p>
@@ -44,7 +44,7 @@
     </div>
     {% endif %}
     {% if student_object in s.students.all %}
-    <div class="card">
+    <div class="card" style="margin-top:15px; margin-bottom:15px;">
         <div class="card-body">
             <h3>{{ s.studentCourse }}</h3>
             <p>Group: {{ s.groupName }}</p>
