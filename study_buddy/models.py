@@ -64,9 +64,9 @@ class Student(models.Model):
                                    RegexValidator(regex='[a-z][a-z][a-z]?[0-9][a-z][a-z][a-z]?', message='Invalid computing ID'), ])
     email = models.EmailField(max_length=254, verbose_name="Email Address")
     phone = models.BigIntegerField(verbose_name="Phone Number", validators=[
-        MaxValueValidator(999999999999)])
+        MaxValueValidator(999999999999)], null=True)
     zoomID = models.BigIntegerField(verbose_name="Personal Zoom ID", validators=[
-        MaxValueValidator(999999999999)])
+        MaxValueValidator(999999999999)], null=True)
     graduationYear = models.IntegerField(
         null=True, verbose_name="Graduation Year", validators=[MinValueValidator(datetime.date.today().year), MaxValueValidator(datetime.date.today().year + 8)])
     bio = models.CharField(max_length=4000, verbose_name="Bio")
