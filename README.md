@@ -1,5 +1,7 @@
 Welcome to our virtual study buddy finder!
 
+Link to Application: https://name-generator43.herokuapp.com
+
 To use this application successfully, there are a couple basic steps to follow to make the most out of your experience.
 
 1. Create an account by logging in with your google account. If you already have used this account with our application, it will recognize this and sign you in.
